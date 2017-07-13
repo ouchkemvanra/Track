@@ -8,16 +8,59 @@
 
 import UIKit
 
+
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, SWRevealViewControllerDelegate {
 
     var window: UIWindow?
 
-
+   
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        window = UIWindow(frame: UIScreen.main.bounds)
+      /*  let mainController = DashboardViewController() as UIViewController
+        let navigationController = UINavigationController(rootViewController: mainController)
+        navigationController.navigationBar.isTranslucent = false
+        let mainViewController   = DashboardViewController()
+        let drawerViewController = MenuViewController()
+        let drawerController     = KYDrawerController(drawerDirection: .left, drawerWidth: 300)
+        
+        drawerController.mainViewController = UINavigationController(
+            rootViewController: mainViewController
+        )
+        drawerController.drawerViewController = drawerViewController
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = drawerController
+        */
+        let frontNavigationController:UINavigationController
+       
+        let revealController = SWRevealViewController()
+        var mainRevealController = SWRevealViewController()
+        
+        let sidebar = MenuViewController()
+        
+        let homepage = DashboardViewController()
+        
+        frontNavigationController =  UINavigationController(rootViewController: homepage)
+        //rearNavigationController = sidebar
+        
+        revealController.frontViewController = frontNavigationController
+        revealController.rearViewController = sidebar
+       // revealController.delegate = self
+        //revealController.rearViewRevealWidth
+        revealController.rearViewRevealOverdraw = 0
+        
+        mainRevealController  = revealController
+        
+        self.window?.rootViewController = mainRevealController
+
+       // self.window?.rootViewController = navigationController
+        self.window?.makeKeyAndVisible()
+        //UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(30, -50.0), for: .default)
         // Override point for customization after application launch.
         return true
     }
+
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -40,7 +83,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    
 
 }
+ private let DimmingViewTag = 10001
 
